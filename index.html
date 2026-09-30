@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Writing Task 1: Reinforcement Practice - Forensic Evaluation</title>
+    <style>
+        :root {
+            --bg-base: #0b1120;
+            --bg-card: #131d33;
+            --bg-elevated: #1a2744;
+            --bg-input: #0f172a;
+            --accent-gold: #f59e0b;
+            --accent-gold-hover: #d97706;
+            --accent-cyan: #38bdf8;
+            --color-correct: #10b981;
+            --color-wrong: #f43f5e;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-subtle: #243556;
+            --border-active: #475569;
+            --locked-color: #f59e0b;
+            --locked-bg: rgba(245, 158, 11, 0.14);
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            --shadow-elevation: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            min-height: 100vh;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header.hud {
+            background-color: var(--bg-card);
+            border-bottom: 2px solid var(--border-subtle);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .hud-wrap {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 0.8rem 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .branding-group {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .badge-crest {
+            width: 44px;
+            height: 44px;
+            background: radial-gradient(circle, #f59e0b 20%, #78350f 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            border: 2px solid #fbbf24;
+            box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
+        }
+
+        .app-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 0.4px;
+        }
+
+        .app-author {
+            font-size: 0.75rem;
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+
+        .hud-meta-group {
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            flex-wrap: wrap;
+        }
+
+        .student-pill {
+            background-color: var(--bg-elevated);
+            padding: 0.4rem 0.9rem;
+            border-radius: 9999px;
+            border: 1px solid var(--border-subtle);
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .timer-badge {
+            background-color: #030712;
+            border: 1px solid #374151;
+            padding: 0.35rem 0.85rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: monospace;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+
+        .timer-btn {
+            background: transparent;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-muted);
+            width: 28px;
+            height: 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer-btn:hover {
+            color: #fff;
+            border-color: var(--accent-gold);
+        }
+
+        nav.stage-progress {
+            background-color: #0d1424;
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 0.65rem 1rem;
+        }
+
+        .stepper-container {
+            max-width: 950px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+        }
+
+        .stepper-container::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            right: 5%;
+            height: 2px;
+            background-color: var(--border-subtle);
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+        .step-bubble {
+            position: relative;
+            z-index: 2;
+            background-color: var(--bg-card);
+            border: 2px solid var(--border-subtle);
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            transition: all 0.25s ease;
+        }
+
+        .step-bubble.current {
+            background-color: var(--accent-gold);
+            color: #0b1120;
+            border-color: #fbbf24;
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.45);
+        }
+
+        .step-bubble.done {
+            background-color: #1e293b;
+            color: var(--accent-cyan);
+            border-color: var(--accent-cyan);
+        }
+
+        main.app-shell {
+            flex: 1;
+            max-width: 1050px;
+            width: 100%;
+            margin: 1.5rem auto;
+            padding: 0 1.25rem 3rem;
+        }
+
+        .dossier-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-elevation);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .stage-header {
+            border-bottom: 1px solid var(--border-subtle);
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .stage-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .stage-desc {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
+        }
+
+        .stage-tag {
+            background-color: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--accent-gold);
+            font-size: 0.78rem;
+            padding: 0.35rem 0.8rem;
+            border-radius: 9999px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .evidence-dossier-box {
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .item-category-tag {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.25rem 0.65rem;
+            border-radius: 6px;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            margin-bottom: 0.85rem;
+        }
+
+        .case-prompt {
+            font-size: 1.18rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+        }
+
+        .concept-cue {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 3px solid var(--accent-cyan);
+            padding: 0.65rem 0.95rem;
+            border-radius: 0 6px 6px 0;
+            font-size: 0.86rem;
+            color: #bae6fd;
+            margin-bottom: 1.25rem;
+        }
+
+        .options-stack {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        @media (min-width: 640px) {
+            .options-stack.grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .opt-btn {
+            background-color: #17233f;
+            border: 2px solid var(--border-subtle);
+            border-radius: 8px;
+            color: var(--text-main);
+            padding: 0.95rem 1.25rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .opt-btn:hover:not(:disabled) {
+            border-color: var(--accent-gold);
+            background-color: #1c2b4c;
+        }
+
+        /* STRICT LOCK-AND-PROCEED: Neutral amber lock border only (no green/red leaks during test) */
+        .opt-btn.is-locked {
+            border-color: var(--locked-color) !important;
+            background-color: var(--locked-bg) !important;
+            color: #fff !important;
+            box-shadow: 0 0 0 1px var(--locked-color);
+        }
+
+        .opt-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.92;
+        }
+
+        .opt-btn .lock-indicator {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            display: none;
+        }
+
+        .opt-btn.is-locked .lock-indicator {
+            display: inline-block;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-subtle);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .lock-status-note {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .btn-proceed {
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-hover));
+            color: #0b1120;
+            font-weight: 800;
+            font-size: 0.95rem;
+            padding: 0.75rem 1.6rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-proceed:disabled {
+            background: #334155;
+            color: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            opacity: 0.6;
+        }
+
+        .btn-proceed:hover:not(:disabled) {
+            transform: translateY(-2px);
+        }
+
+        .login-wrap {
+            max-width: 550px;
+            margin: 2.5rem auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-elevation);
+            text-align: center;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+        }
+
+        .form-input {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid var(--border-subtle);
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-gold);
+        }
+
+        .rating-badge {
+            display: inline-block;
+            padding: 0.45rem 1.2rem;
+            border-radius: 9999px;
+            font-size: 1.05rem;
+            font-weight: 800;
+        }
+
+        .rating-master {
+            background-color: rgba(16, 185, 129, 0.15);
+            border: 1px solid #10b981;
+            color: #34d399;
+        }
+
+        .rating-senior {
+            background-color: rgba(56, 189, 248, 0.15);
+            border: 1px solid #38bdf8;
+            color: #38bdf8;
+        }
+
+        .rating-cadet {
+            background-color: rgba(245, 158, 11, 0.15);
+            border: 1px solid #f59e0b;
+            color: #fbbf24;
+        }
+
+        .review-table-wrap {
+            overflow-x: auto;
+            margin-top: 1.5rem;
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+        }
+
+        table.dossier-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.88rem;
+            text-align: left;
+        }
+
+        table.dossier-table th {
+            background-color: #0d1424;
+            color: var(--text-muted);
+            padding: 0.85rem 1rem;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        table.dossier-table td {
+            padding: 0.85rem 1rem;
+            border-bottom: 1px solid var(--border-subtle);
+            vertical-align: top;
+        }
+
+        table.dossier-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .status-pill {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 0.75rem;
+        }
+
+        .status-pill.correct {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .status-pill.incorrect {
+            background: rgba(244, 63, 94, 0.2);
+            color: #f43f5e;
+            border: 1px solid #f43f5e;
+        }
+
+        @media print {
+            header.hud, nav.stage-progress, .action-row, .no-print {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+            }
+            .dossier-card {
+                box-shadow: none !important;
+                border: 1px solid #cbd5e1 !important;
+                background: #ffffff !important;
+            }
+            table.dossier-table th {
+                background-color: #f1f5f9 !important;
+                color: #000000 !important;
+                border-bottom: 2px solid #334155 !important;
+            }
+            table.dossier-table td {
+                color: #000000 !important;
+                border-bottom: 1px solid #cbd5e1 !important;
+            }
+            .rating-badge {
+                border: 2px solid #000000 !important;
+                color: #000000 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hud">
+        <div class="hud-wrap">
+            <div class="branding-group">
+                <div class="badge-crest">📊</div>
+                <div>
+                    <div class="app-title">Academic Writing Task 1: Reinforcement Practice</div>
+                    <div class="app-author">Prepared by Muhammad Shahzad_utas _ibra_2026=2027 • EV Market Trends 2020–2025</div>
+                </div>
+            </div>
+
+            <div class="hud-meta-group">
+                <div class="student-pill" id="hud-student-tag" style="display: none;">
+                    <span>Student:</span>
+                    <strong id="hud-name-display" style="color: var(--accent-gold);">Candidate</strong>
+                </div>
+
+                <div class="timer-badge">
+                    <span id="timer-display">60:00</span>
+                    <button class="timer-btn" id="timer-toggle-btn" title="Pause / Resume Timer">⏸</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stage Progress Indicator -->
+    <nav class="stage-progress" id="stage-nav-bar" style="display: none;">
+        <div class="stepper-container">
+            <div class="step-bubble current" id="step-node-1">1</div>
+            <div class="step-bubble" id="step-node-2">2</div>
+            <div class="step-bubble" id="step-node-3">3</div>
+            <div class="step-bubble" id="step-node-4">4</div>
+            <div class="step-bubble" id="step-node-5">★</div>
+        </div>
+    </nav>
+
+    <main class="app-shell">
+
+        <!-- ================= LOGIN SCREEN ================= -->
+        <section id="screen-login" class="login-wrap">
+            <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">📝</div>
+            <h2 style="color: #fff; margin-bottom: 0.35rem;">Academic Writing Task 1: Diagnostic Assessment</h2>
+            <div style="font-size: 0.85rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 0.75rem;">
+                Prepared by Muhammad Shahzad_utas _ibra_2026=2027
+            </div>
+            <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+                Foundation Programme ESL Writing Reinforcement: Electric Vehicle (EV) Market Trends 2020–2025. Enter your institutional credentials to open the 40-item diagnostic protocol.
+            </p>
+
+            <form id="login-form" onsubmit="handleStartPractice(event)">
+                <div class="form-group">
+                    <label class="form-label" for="input-name">Student Full Name</label>
+                    <input type="text" id="input-name" class="form-input" placeholder="e.g., Tariq Al-Busaidi" required autocomplete="name">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="input-section">Student ID / University Campus & Section</label>
+                    <input type="text" id="input-section" class="form-input" placeholder="e.g., UTAS-Ibra / Foundation B1 - Sec 2" required>
+                </div>
+
+                <div style="background: rgba(245, 158, 11, 0.08); border-left: 3px solid var(--accent-gold); padding: 0.8rem; border-radius: 4px; margin-bottom: 1.5rem; text-align: left; font-size: 0.82rem; color: #fde68a;">
+                    <strong>Strict Evaluation Protocol:</strong><br>
+                    • One attempt only per item: your selection locks immediately upon clicking.<br>
+                    • Running scores and answers are concealed until the final comprehensive review.
+                </div>
+
+                <button type="submit" class="btn-proceed" style="width: 100%; justify-content: center;">
+                    Authorize Credentials & Open Assessment →
+                </button>
+            </form>
+        </section>
+
+        <!-- ================= PRACTICE CONTAINER ================= -->
+        <section id="screen-gameplay" style="display: none;">
+            <div class="dossier-card">
+                
+                <div class="stage-header">
+                    <div>
+                        <h3 class="stage-title" id="stage-title-text">Stage 1: Foundational Syntax & Agreement</h3>
+                        <p class="stage-desc" id="stage-desc-text">Mastering subject-verb agreement, mechanical spelling, and grammatical voice in graph overviews.</p>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem;">
+                        <span class="stage-tag" id="stage-badge-text">STAGE 1 OF 4</span>
+                        <span style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;" id="question-tracker">Item 1 of 10</span>
+                    </div>
+                </div>
+
+                <!-- Dynamic Item Body Injected Here -->
+                <div id="dynamic-stage-body"></div>
+
+                <!-- Action & Navigation Bar -->
+                <div class="action-row">
+                    <span class="lock-status-note" id="lock-status-text">Select an option to lock your answer immediately.</span>
+                    <button class="btn-proceed" id="btn-next-question" disabled onclick="handleProceedNext()">
+                        Submit & Next Item →
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= FINAL COMPREHENSIVE DOSSIER ================= -->
+        <section id="screen-dossier" style="display: none;">
+            <div class="dossier-card">
+                <div style="text-align: center; border-bottom: 1px solid var(--border-subtle); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
+                    <div style="font-size: 2.2rem; margin-bottom: 0.5rem;">📜</div>
+                    <h2 style="color: #fff; font-size: 1.7rem; text-transform: uppercase; letter-spacing: 1px;">Official Academic Writing Diagnostic Dossier</h2>
+                    <p style="color: var(--accent-gold); font-weight: 700; font-size: 0.95rem;">Foundation English Programme • Task 1 Reinforcement Assessment</p>
+                    <p style="color: #94a3b8; font-size: 0.82rem; font-weight: 600; margin-top: 0.35rem;">Prepared by Muhammad Shahzad_utas _ibra_2026=2027</p>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; background: var(--bg-elevated); padding: 1.25rem; border-radius: 8px;">
+                    <div>
+                        <div class="form-label">Student Name</div>
+                        <div style="font-size: 1.1rem; font-weight: 800; color: #fff;" id="dossier-student-name">-</div>
+                    </div>
+                    <div>
+                        <div class="form-label">Student ID / Section</div>
+                        <div style="font-size: 1.1rem; font-weight: 800; color: #fff;" id="dossier-student-section">-</div>
+                    </div>
+                    <div>
+                        <div class="form-label">Total Score</div>
+                        <div style="font-size: 1.2rem; font-weight: 800; color: var(--accent-gold);" id="dossier-score-text">0 / 40 (0%)</div>
+                    </div>
+                    <div>
+                        <div class="form-label">Diagnostic Rating</div>
+                        <div id="dossier-rank-container"></div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <h4 style="color: #fff; margin-bottom: 0.5rem;">Item-by-Item Socratic Grammar Review</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        Analyze each locked submission alongside the target academic criteria, correct forms, and pedagogical explanations.
+                    </p>
+
+                    <div class="review-table-wrap">
+                        <table class="dossier-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%;">#</th>
+                                    <th style="width: 15%;">Category</th>
+                                    <th style="width: 32%;">Question Prompt</th>
+                                    <th style="width: 14%;">Your Locked Choice</th>
+                                    <th style="width: 14%;">Correct Answer</th>
+                                    <th style="width: 20%;">Linguistic Explanation</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dossier-table-body">
+                                <!-- Populated dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem;" class="no-print">
+                    <button class="btn-proceed" style="background: #334155; color: #fff;" onclick="window.print()">
+                        🖨️ Print / Save PDF Dossier
+                    </button>
+                    <button class="btn-proceed" onclick="location.reload()">
+                        🔄 Retake Practice Session
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        class PracticeAudioEngine {
+            constructor() {
+                this.ctx = null;
+            }
+
+            init() {
+                if (!this.ctx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioCtx();
+                }
+            }
+
+            playTone(freq, type, duration, gainLevel = 0.1) {
+                try {
+                    this.init();
+                    if (this.ctx.state === 'suspended') this.ctx.resume();
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = type;
+                    osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+                    gain.gain.setValueAtTime(gainLevel, this.ctx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + duration);
+                    osc.connect(gain);
+                    gain.connect(this.ctx.destination);
+                    osc.start();
+                    osc.stop(this.ctx.currentTime + duration);
+                } catch(e) {}
+            }
+
+            lockSound() {
+                this.playTone(480, 'sine', 0.08, 0.1);
+            }
+
+            advanceSound() {
+                this.playTone(620, 'triangle', 0.1, 0.08);
+            }
+
+            fanfare() {
+                [523, 659, 784, 1046].forEach((f, idx) => {
+                    setTimeout(() => this.playTone(f, 'triangle', 0.35, 0.12), idx * 110);
+                });
+            }
+        }
+
+        const audio = new PracticeAudioEngine();
+
+        const PracticeSessionData = {
+            studentName: "",
+            studentSection: "",
+            timerSeconds: 3600, // 60:00
+            timerRunning: true,
+            timerInterval: null,
+            
+            currentStage: 1,
+            currentQuestionIdx: 0,
+            lockedAnswerForCurrent: null,
+            userSubmissions: [],
+
+            // STAGE 1: SET 1 (Items 1-10 from original prompt)
+            stage1: [
+                {
+                    id: 1,
+                    category: "SUBJECT_VERB_AGREEMENT",
+                    conceptCue: "Concept Cue: Check whether the head subject noun ('companies') is singular or plural.",
+                    prompt: "The companies ____ a high number of sales in 2025.",
+                    options: [
+                        { letter: "A", text: "has" },
+                        { letter: "B", text: "have" },
+                        { letter: "C", text: "is has" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "have",
+                    explanation: "The subject 'companies' is plural, requiring the plural verb 'have'. 'Has' is singular, and 'is has' is an ungrammatical auxiliary double-verb."
+                },
+                {
+                    id: 2,
+                    category: "MECHANICS_SPELLING",
+                    conceptCue: "Concept Cue: Identify the standard spelling for the ordinal number indicating position 1.",
+                    prompt: "The graph shows the ____ three years of the period.",
+                    options: [
+                        { letter: "A", text: "firast" },
+                        { letter: "B", text: "first" },
+                        { letter: "C", text: "frist" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "first",
+                    explanation: "The correct English spelling for the ordinal number (1st) is 'first'."
+                },
+                {
+                    id: 3,
+                    category: "GRAMMATICAL_VOICE",
+                    conceptCue: "Concept Cue: Passive structure following a modal verb ('can') requires modal + be + past participle.",
+                    prompt: "It can ____ that BYD grew the most.",
+                    options: [
+                        { letter: "A", text: "seen" },
+                        { letter: "B", text: "be seen" },
+                        { letter: "C", text: "saw" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "be seen",
+                    explanation: "The impersonal passive reporting frame is 'It can be seen that...'. Modal 'can' requires the bare infinitive 'be' followed by past participle 'seen'."
+                },
+                {
+                    id: 4,
+                    category: "MECHANICS_SPELLING",
+                    conceptCue: "Concept Cue: Distinguish between the homophones 'same' (identical), 'seam' (stitch), and 'seem' (appear).",
+                    prompt: "Both companies followed the ____ trend.",
+                    options: [
+                        { letter: "A", text: "seam" },
+                        { letter: "B", text: "same" },
+                        { letter: "C", text: "seem" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "same",
+                    explanation: "'Same' means identical or corresponding. 'Seam' refers to cloth stitching, and 'seem' is a linking verb meaning appear."
+                },
+                {
+                    id: 5,
+                    category: "TREND_PREPOSITION",
+                    conceptCue: "Concept Cue: Remember the paired correlative time prepositions: 'from... to...' or 'between... and...'.",
+                    prompt: "The data is shown ____ 2020 ____ 2025.",
+                    options: [
+                        { letter: "A", text: "in / to" },
+                        { letter: "B", text: "from / to" },
+                        { letter: "C", text: "between / to" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "from / to",
+                    explanation: "In academic graph descriptions, 'from' pairs with 'to' ('from 2020 to 2025'). 'Between' always pairs with 'and'."
+                },
+                {
+                    id: 6,
+                    category: "TENSE_INCONSISTENCY",
+                    conceptCue: "Concept Cue: Trends occurring in closed past timeframes (2023) require the simple past tense.",
+                    prompt: "The sales of Tesla ____ after 2023.",
+                    options: [
+                        { letter: "A", text: "decreased" },
+                        { letter: "B", text: "is decrease" },
+                        { letter: "C", text: "decresd" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "decreased",
+                    explanation: "Past trends demand the active Past Simple ('decreased'). 'Is decrease' mixes present auxiliary with base verb."
+                },
+                {
+                    id: 7,
+                    category: "MECHANICS_SPELLING",
+                    conceptCue: "Concept Cue: Verify standard spelling of high-frequency frequency determiners.",
+                    prompt: "The sales increased ____ over the period.",
+                    options: [
+                        { letter: "A", text: "every year" },
+                        { letter: "B", text: "ewar year" },
+                        { letter: "C", text: "evry year" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "every year",
+                    explanation: "The correct spelling of the determiner is 'every' (e-v-e-r-y)."
+                },
+                {
+                    id: 8,
+                    category: "MECHANICS_SPELLING",
+                    conceptCue: "Concept Cue: Superlative form of 'many / much'.",
+                    prompt: "BYD achieved the ____ sales by the end of the period.",
+                    options: [
+                        { letter: "A", text: "moset" },
+                        { letter: "B", text: "most" },
+                        { letter: "C", text: "mostest" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "most",
+                    explanation: "The superlative of 'many' is 'most' ('the most sales'). 'Mostest' is non-standard English."
+                },
+                {
+                    id: 9,
+                    category: "LEXICAL_COLLOCATION",
+                    conceptCue: "Concept Cue: Verbs of movement ('went up') are modified by adverbs of manner ending in '-ly'.",
+                    prompt: "The numbers went up ____.",
+                    options: [
+                        { letter: "A", text: "fastley" },
+                        { letter: "B", text: "quickly" },
+                        { letter: "C", text: "quick" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "quickly",
+                    explanation: "Verbs like 'went up' must be modified by an adverb ('quickly'). 'Fastley' is not a valid English word ('fast' is irregular)."
+                },
+                {
+                    id: 10,
+                    category: "MECHANICS_SPELLING",
+                    conceptCue: "Concept Cue: Regular noun pluralization rule for single-syllable nouns ending in consonant.",
+                    prompt: "The line shows several small ____ of growth.",
+                    options: [
+                        { letter: "A", text: "stepes" },
+                        { letter: "B", text: "steps" },
+                        { letter: "C", text: "stepps" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "steps",
+                    explanation: "The plural of 'step' is formed by simply adding 's': 'steps'."
+                }
+            ],
+
+            // STAGE 2: SET 2 (Items 11-20 from original prompt)
+            stage2: [
+                {
+                    id: 11,
+                    category: "MECHANICS_PUNCTUATION",
+                    conceptCue: "Concept Cue: Ensure correct spelling and capitalization for country proper nouns.",
+                    prompt: "BYD is a major electric vehicle manufacturer from ______.",
+                    options: [
+                        { letter: "A", text: "Chaina" },
+                        { letter: "B", text: "China" },
+                        { letter: "C", text: "Chyna" },
+                        { letter: "D", text: "Cheina" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "China",
+                    explanation: "Proper nouns must be spelled accurately: 'China'."
+                },
+                {
+                    id: 12,
+                    category: "TENSE_INCONSISTENCY",
+                    conceptCue: "Concept Cue: Trend verbs (increase, decrease) describe autonomous changes in active voice.",
+                    prompt: "Between 2020 and 2025, the sales of BYD ______ significantly.",
+                    options: [
+                        { letter: "A", text: "is increased" },
+                        { letter: "B", text: "was increased" },
+                        { letter: "C", text: "increased" },
+                        { letter: "D", text: "increasing" }
+                    ],
+                    correctLetter: "C",
+                    correctText: "increased",
+                    explanation: "In graph reports, trend verbs are active: 'the sales increased', not passive 'was increased'."
+                },
+                {
+                    id: 13,
+                    category: "TENSE_INCONSISTENCY",
+                    conceptCue: "Concept Cue: 'Rise' is an irregular verb (rise -> rose -> risen). Avoid non-standard forms like 'rised'.",
+                    prompt: "The sales of Tesla ______ to 1500 in 2025.",
+                    options: [
+                        { letter: "A", text: "was rose" },
+                        { letter: "B", text: "was rised" },
+                        { letter: "C", text: "rose" },
+                        { letter: "D", text: "rised" }
+                    ],
+                    correctLetter: "C",
+                    correctText: "rose",
+                    explanation: "'Rise' is an irregular intransitive verb: past simple is 'rose'. Never use 'was rose' or 'rised'."
+                },
+                {
+                    id: 14,
+                    category: "LEXICAL_COLLOCATION",
+                    conceptCue: "Concept Cue: The comparative adjective 'same' requires the definite article 'the'.",
+                    prompt: "The sales figures for both companies were almost ______.",
+                    options: [
+                        { letter: "A", text: "same" },
+                        { letter: "B", text: "the same" },
+                        { letter: "C", text: "similar as" },
+                        { letter: "D", text: "same like" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "the same",
+                    explanation: "The standard comparative collocation is 'the same'. It always requires the definite article."
+                },
+                {
+                    id: 15,
+                    category: "TREND_PREPOSITION",
+                    conceptCue: "Concept Cue: Preposition used when indicating a specific plateau or vertical level.",
+                    prompt: "In 2023, both companies reached ______ the same level.",
+                    options: [
+                        { letter: "A", text: "in" },
+                        { letter: "B", text: "at" },
+                        { letter: "C", text: "to" },
+                        { letter: "D", text: "on" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "at",
+                    explanation: "In academic graph descriptions, figures level off or stabilize 'at the same level' or 'at a peak'."
+                },
+                {
+                    id: 16,
+                    category: "MECHANICS_PUNCTUATION",
+                    conceptCue: "Concept Cue: Standard spelling of the diminutive adjective modifying 'increase'.",
+                    prompt: "There was a ______ increase in Volkswagen's sales.",
+                    options: [
+                        { letter: "A", text: "littel" },
+                        { letter: "B", text: "litel" },
+                        { letter: "C", text: "little" },
+                        { letter: "D", text: "littell" }
+                    ],
+                    correctLetter: "C",
+                    correctText: "little",
+                    explanation: "The correct spelling of the quantifier/adjective is 'little' (l-i-t-t-l-e)."
+                },
+                {
+                    id: 17,
+                    category: "SUBJECT_VERB_AGREEMENT",
+                    conceptCue: "Concept Cue: Subject pronoun repetition error: avoid adding redundant pronouns ('its') before verbs.",
+                    prompt: "Tesla ______ a different trend after 2023.",
+                    options: [
+                        { letter: "A", text: "followed" },
+                        { letter: "B", text: "its followed" },
+                        { letter: "C", text: "were follow" },
+                        { letter: "D", text: "was following" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "followed",
+                    explanation: "The subject 'Tesla' directly takes the past simple predicate verb 'followed'. Inserting 'its followed' creates a grammatical error."
+                },
+                {
+                    id: 18,
+                    category: "TENSE_INCONSISTENCY",
+                    conceptCue: "Concept Cue: Trend verbs are intransitive/active when reporting movement to a numerical value.",
+                    prompt: "The number of sales ______ to 1000 in the final year.",
+                    options: [
+                        { letter: "A", text: "was decreased" },
+                        { letter: "B", text: "decreased" },
+                        { letter: "C", text: "is decrease" },
+                        { letter: "D", text: "were decreased" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "decreased",
+                    explanation: "Active Past Simple 'decreased' is required. Do not use passive voice ('was decreased') for general trend movement."
+                },
+                {
+                    id: 19,
+                    category: "MECHANICS_PUNCTUATION",
+                    conceptCue: "Concept Cue: Double consonant spelling for the adjective 'different'.",
+                    prompt: "The three companies took a ______ path in the last two years.",
+                    options: [
+                        { letter: "A", text: "diffrent" },
+                        { letter: "B", text: "different" },
+                        { letter: "C", text: "differant" },
+                        { letter: "D", text: "diferent" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "different",
+                    explanation: "The standard spelling is 'different' (double 'f', and 'e' in the second syllable)."
+                },
+                {
+                    id: 20,
+                    category: "LEXICAL_COLLOCATION",
+                    conceptCue: "Concept Cue: Discourse markers for graph overview paragraphs.",
+                    prompt: "______, the trend for all companies was upward initially.",
+                    options: [
+                        { letter: "A", text: "In geniral" },
+                        { letter: "B", text: "In general" },
+                        { letter: "C", text: "Generally" },
+                        { letter: "D", text: "Both B and C" }
+                    ],
+                    correctLetter: "D",
+                    correctText: "Both B and C",
+                    explanation: "Both 'In general' and 'Generally' are standard academic introductory adverbs for overall trend overviews."
+                }
+            ],
+
+            // STAGE 3: SET 3 (Items 21-30 from original prompt)
+            stage3: [
+                {
+                    id: 21,
+                    category: "TREND_PREPOSITION",
+                    conceptCue: "Concept Cue: Time marker paired with 'and'.",
+                    prompt: "Sales increased significantly _______ 2020 and 2025.",
+                    options: [
+                        { letter: "A", text: "between" },
+                        { letter: "B", text: "from" },
+                        { letter: "C", text: "to" },
+                        { letter: "D", text: "at" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "between",
+                    explanation: "'Between' is paired with 'and' ('between 2020 and 2025'). In contrast, 'from' pairs with 'to'."
+                },
+                {
+                    id: 22,
+                    category: "SUBJECT_VERB_AGREEMENT",
+                    conceptCue: "Concept Cue: Identify the head noun of the subject phrase: 'sales' of electric cars.",
+                    prompt: "The sales of electric cars _______ higher in 2025.",
+                    options: [
+                        { letter: "A", text: "was" },
+                        { letter: "B", text: "were" },
+                        { letter: "C", text: "is" },
+                        { letter: "D", text: "be" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "were",
+                    explanation: "The head noun of the noun phrase is plural ('sales'), so the past simple form of 'be' must be 'were'."
+                },
+                {
+                    id: 23,
+                    category: "MECHANICS_PUNCTUATION",
+                    conceptCue: "Concept Cue: Comparative form of the adjective 'low' followed by 'than'.",
+                    prompt: "The sales of Volkswagen were _______ than Tesla in 2022.",
+                    options: [
+                        { letter: "A", text: "lowr" },
+                        { letter: "B", text: "lower" },
+                        { letter: "C", text: "low" },
+                        { letter: "D", text: "lowest" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "lower",
+                    explanation: "When comparing two data sets with 'than', use the comparative form 'lower' (spelled l-o-w-e-r)."
+                },
+                {
+                    id: 24,
+                    category: "SYNTAX_FRAGMENT",
+                    conceptCue: "Concept Cue: Subject-verb agreement with the plural noun 'figures'.",
+                    prompt: "In 2023, the sales figures for all three companies _______ equal.",
+                    options: [
+                        { letter: "A", text: "was" },
+                        { letter: "B", text: "were" },
+                        { letter: "C", text: "did" },
+                        { letter: "D", text: "has" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "were",
+                    explanation: "The plural subject 'figures' paired with predicate adjective 'equal' requires the linking verb 'were'."
+                },
+                {
+                    id: 25,
+                    category: "MECHANICS_PUNCTUATION",
+                    conceptCue: "Concept Cue: Accurate spelling of cardinal number 3.",
+                    prompt: "The trend lasted for _______ years.",
+                    options: [
+                        { letter: "A", text: "threa" },
+                        { letter: "B", text: "tree" },
+                        { letter: "C", text: "three" },
+                        { letter: "D", text: "there" }
+                    ],
+                    correctLetter: "C",
+                    correctText: "three",
+                    explanation: "The cardinal number is spelled 'three'. 'Tree' is a woody plant and 'there' is an adverb of place."
+                },
+                {
+                    id: 26,
+                    category: "TREND_PREPOSITION",
+                    conceptCue: "Concept Cue: Stating starting number and ending number with 'to'.",
+                    prompt: "Sales grew _______ 500 to 3000 over the period.",
+                    options: [
+                        { letter: "A", text: "between" },
+                        { letter: "B", text: "from" },
+                        { letter: "C", text: "at" },
+                        { letter: "D", text: "in" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "from",
+                    explanation: "Movement starting from an initial number and finishing at an upper number uses 'from [number] to [number]'."
+                },
+                {
+                    id: 27,
+                    category: "LEXICAL_COLLOCATION",
+                    conceptCue: "Concept Cue: Formal academic verb describing two lines meeting and crossing on a graph.",
+                    prompt: "In 2023, the lines _______ at approximately 1800 sales.",
+                    options: [
+                        { letter: "A", text: "made same wave" },
+                        { letter: "B", text: "intersected" },
+                        { letter: "C", text: "went low" },
+                        { letter: "D", text: "saw same" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "intersected",
+                    explanation: "'Intersected' is the precise academic vocabulary word describing lines meeting and crossing on a line graph."
+                },
+                {
+                    id: 28,
+                    category: "MECHANICS_PUNCTUATION",
+                    conceptCue: "Concept Cue: Proper noun spelling matching the chart legend.",
+                    prompt: "The company _______ recorded the highest growth.",
+                    options: [
+                        { letter: "A", text: "Tasla" },
+                        { letter: "B", text: "Tesla" },
+                        { letter: "C", text: "Tessla" },
+                        { letter: "D", text: "Teslar" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "Tesla",
+                    explanation: "Correct spelling of the manufacturer name as presented in the data: 'Tesla'."
+                },
+                {
+                    id: 29,
+                    category: "SYNTAX_RUN_ON",
+                    conceptCue: "Concept Cue: Avoid pronoun repetition ('sales it went down') which causes a syntax error.",
+                    prompt: "After the peak in 2023, sales ______.",
+                    options: [
+                        { letter: "A", text: "went low" },
+                        { letter: "B", text: "decreased" },
+                        { letter: "C", text: "it went down" },
+                        { letter: "D", text: "dropping" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "decreased",
+                    explanation: "'Decreased' provides a single past simple predicate without redundant subject pronoun insertion ('it')."
+                },
+                {
+                    id: 30,
+                    category: "LEXICAL_RESOURCE",
+                    conceptCue: "Concept Cue: Time preposition indicating an event that happened subsequently.",
+                    prompt: "BYD's sales surpassed Tesla's _______ 2023.",
+                    options: [
+                        { letter: "A", text: "at" },
+                        { letter: "B", text: "after" },
+                        { letter: "C", text: "between" },
+                        { letter: "D", text: "on" }
+                    ],
+                    correctLetter: "B",
+                    correctText: "after",
+                    explanation: "The preposition 'after' indicates the chronological sequence where one line climbed above the other ('surpassed Tesla's after 2023')."
+                }
+            ],
+
+            // STAGE 4: ADVANCED DATA DESCRIPTION & SYNTAX (Items 31-40: New items completing 40 questions)
+            stage4: [
+                {
+                    id: 31,
+                    category: "TREND_PREPOSITION",
+                    conceptCue: "Concept Cue: Distinguish between preposition of destination ('to') vs preposition of margin ('by').",
+                    prompt: "Sales rose ______ 1,000 units, moving from 2,000 up to 3,000.",
+                    options: [
+                        { letter: "A", text: "by" },
+                        { letter: "B", text: "to" },
+                        { letter: "C", text: "at" },
+                        { letter: "D", text: "for" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "by",
+                    explanation: "Use 'by' to express the difference/margin of change (3,000 - 2,000 = 1,000). Use 'to' for the final destination point."
+                },
+                {
+                    id: 32,
+                    category: "LEXICAL_COLLOCATION",
+                    conceptCue: "Concept Cue: Collocation for reaching the highest point on a line graph.",
+                    prompt: "BYD's sales ______ a peak of 3,000 units in 2025.",
+                    options: [
+                        { letter: "A", text: "reached" },
+                        { letter: "B", text: "arrived" },
+                        { letter: "C", text: "rose up to" },
+                        { letter: "D", text: "climbed at" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "reached",
+                    explanation: "The standard academic phrase for the highest data point is 'reached a peak of [number]'."
+                },
+                {
+                    id: 33,
+                    category: "SUBJECT_VERB_AGREEMENT",
+                    conceptCue: "Concept Cue: 'The number of + plural noun' takes a singular verb.",
+                    prompt: "The number of electric vehicles sold ______ consistently every quarter.",
+                    options: [
+                        { letter: "A", text: "increases" },
+                        { letter: "B", text: "increase" },
+                        { letter: "C", text: "are increasing" },
+                        { letter: "D", text: "have increased" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "increases",
+                    explanation: "'The number of...' is grammatically singular and takes the singular verb form 'increases'. (In contrast, 'A number of...' is plural)."
+                },
+                {
+                    id: 34,
+                    category: "LEXICAL_RESOURCE",
+                    conceptCue: "Concept Cue: Compound adjective with a hyphen used before a noun of duration.",
+                    prompt: "Over the ______ period, BYD demonstrated the fastest growth.",
+                    options: [
+                        { letter: "A", text: "five-year" },
+                        { letter: "B", text: "five years" },
+                        { letter: "C", text: "five-years" },
+                        { letter: "D", text: "fife year" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "five-year",
+                    explanation: "When modifying a noun ('period'), compound numerical adjectives take singular form with a hyphen: 'five-year period'."
+                },
+                {
+                    id: 35,
+                    category: "GRAMMATICAL_VOICE",
+                    conceptCue: "Concept Cue: Formal introductory overview clause with dummy subject 'it'.",
+                    prompt: "______ is evident from the chart that Tesla experienced a decline after 2023.",
+                    options: [
+                        { letter: "A", text: "It" },
+                        { letter: "B", text: "There" },
+                        { letter: "C", text: "As" },
+                        { letter: "D", text: "What" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "It",
+                    explanation: "The formal academic introductory structure uses the anticipatory 'It' ('It is evident from the chart that...')."
+                },
+                {
+                    id: 36,
+                    category: "LEXICAL_COLLOCATION",
+                    conceptCue: "Concept Cue: Adjective modifying a noun of change ('increase'). Adverbs modify verbs.",
+                    prompt: "Volkswagen experienced a ______ increase in market adoption.",
+                    options: [
+                        { letter: "A", text: "slight" },
+                        { letter: "B", text: "slightly" },
+                        { letter: "C", text: "more slight" },
+                        { letter: "D", text: "slightest" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "slight",
+                    explanation: "Before a noun ('increase'), use an adjective: 'a slight increase'. Use the adverb ('slightly') when modifying a verb ('increased slightly')."
+                },
+                {
+                    id: 37,
+                    category: "TENSE_INCONSISTENCY",
+                    conceptCue: "Concept Cue: When presenting the graph itself in an introduction, use the Present Simple.",
+                    prompt: "The line graph ______ information about EV sales in three leading markets.",
+                    options: [
+                        { letter: "A", text: "illustrates" },
+                        { letter: "B", text: "illustrated" },
+                        { letter: "C", text: "is illustrate" },
+                        { letter: "D", text: "was illustrated" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "illustrates",
+                    explanation: "The introductory sentence describes what the static diagram currently shows, which takes the Present Simple ('illustrates' or 'shows')."
+                },
+                {
+                    id: 38,
+                    category: "TREND_PREPOSITION",
+                    conceptCue: "Concept Cue: Preposition used when giving an exact figure at the end of a sentence.",
+                    prompt: "Tesla's sales ended the period ______ 1,500 vehicles.",
+                    options: [
+                        { letter: "A", text: "at" },
+                        { letter: "B", text: "with" },
+                        { letter: "C", text: "in" },
+                        { letter: "D", text: "by" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "at",
+                    explanation: "Point locations and ending values take 'at': 'ended the period at 1,500 vehicles'."
+                },
+                {
+                    id: 39,
+                    category: "SYNTAX_RUN_ON",
+                    conceptCue: "Concept Cue: Conjunction showing contrast between two independent clauses.",
+                    prompt: "BYD saw rapid growth, ______ Volkswagen's sales rose only moderately.",
+                    options: [
+                        { letter: "A", text: "whereas" },
+                        { letter: "B", text: "despite" },
+                        { letter: "C", text: "in spite" },
+                        { letter: "D", text: "because of" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "whereas",
+                    explanation: "'Whereas' is a coordinating/subordinating contrast conjunction that connects two complete clauses with parallel verbs."
+                },
+                {
+                    id: 40,
+                    category: "LEXICAL_RESOURCE",
+                    conceptCue: "Concept Cue: Academic overview sentence transition adverb.",
+                    prompt: "______, BYD was the top performer throughout the final phase of the timeline.",
+                    options: [
+                        { letter: "A", text: "Overall" },
+                        { letter: "B", text: "Over all" },
+                        { letter: "C", text: "Overly" },
+                        { letter: "D", text: "In all over" }
+                    ],
+                    correctLetter: "A",
+                    correctText: "Overall",
+                    explanation: "'Overall' is the standard single-word adverb used to open the mandatory Task 1 overview paragraph."
+                }
+            ]
+        };
+
+        function handleStartPractice(e) {
+            e.preventDefault();
+            const name = document.getElementById('input-name').value.trim();
+            const sec = document.getElementById('input-section').value.trim();
+
+            if (!name || !sec) return;
+
+            PracticeSessionData.studentName = name;
+            PracticeSessionData.studentSection = sec;
+
+            document.getElementById('hud-name-display').textContent = name;
+            document.getElementById('hud-student-tag').style.display = 'flex';
+            document.getElementById('stage-nav-bar').style.display = 'block';
+
+            document.getElementById('screen-login').style.display = 'none';
+            document.getElementById('screen-gameplay').style.display = 'block';
+
+            startClassroomTimer();
+            renderCurrentQuestion();
+        }
+
+        function startClassroomTimer() {
+            PracticeSessionData.timerInterval = setInterval(() => {
+                if (PracticeSessionData.timerRunning && PracticeSessionData.timerSeconds > 0) {
+                    PracticeSessionData.timerSeconds--;
+                    const m = Math.floor(PracticeSessionData.timerSeconds / 60);
+                    const s = PracticeSessionData.timerSeconds % 60;
+                    document.getElementById('timer-display').textContent = 
+                        `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+                }
+            }, 1000);
+
+            document.getElementById('timer-toggle-btn').addEventListener('click', () => {
+                PracticeSessionData.timerRunning = !PracticeSessionData.timerRunning;
+                document.getElementById('timer-toggle-btn').textContent = PracticeSessionData.timerRunning ? '⏸' : '▶';
+            });
+        }
+
+        function renderCurrentQuestion() {
+            // Update Stepper bubble
+            for (let i = 1; i <= 4; i++) {
+                const node = document.getElementById(`step-node-${i}`);
+                node.className = 'step-bubble';
+                if (i < PracticeSessionData.currentStage) node.classList.add('done');
+                if (i === PracticeSessionData.currentStage) node.classList.add('current');
+            }
+
+            // Reset lock state for the new question
+            PracticeSessionData.lockedAnswerForCurrent = null;
+            document.getElementById('btn-next-question').disabled = true;
+            document.getElementById('lock-status-text').textContent = "Select an option to lock your answer immediately.";
+
+            const stageNum = PracticeSessionData.currentStage;
+            const qIdx = PracticeSessionData.currentQuestionIdx;
+
+            const stageMeta = [
+                { title: "Stage 1: Foundational Syntax & Agreement", desc: "Mastering subject-verb agreement, mechanical spelling, and grammatical voice in graph overviews." },
+                { title: "Stage 2: Trend Movement & Verb Consistency", desc: "Refining past simple active verbs, proper nouns, and comparative standard collocations." },
+                { title: "Stage 3: Prepositions & Comparative Structures", desc: "Drilling paired prepositions (from/to, between/and), superlative forms, and line intersections." },
+                { title: "Stage 4: Advanced Data Description & Syntax", desc: "Precise numerical prepositions, overview discourse markers, and complex sentence connectors." }
+            ][stageNum - 1];
+
+            document.getElementById('stage-title-text').textContent = stageMeta.title;
+            document.getElementById('stage-desc-text').textContent = stageMeta.desc;
+            document.getElementById('stage-badge-text').textContent = `STAGE ${stageNum} OF 4`;
+            document.getElementById('question-tracker').textContent = `Item ${qIdx + 1} of 10`;
+
+            const stageArray = PracticeSessionData[`stage${stageNum}`];
+            const item = stageArray[qIdx];
+
+            const container = document.getElementById('dynamic-stage-body');
+            container.innerHTML = '';
+
+            const box = document.createElement('div');
+            box.className = 'evidence-dossier-box';
+
+            box.innerHTML = `
+                <div class="item-category-tag">${item.category.replace(/_/g, ' ')} • ITEM ${item.id}</div>
+                <div class="concept-cue">${item.conceptCue}</div>
+                <div class="case-prompt">${item.prompt}</div>
+            `;
+
+            const optionsStack = document.createElement('div');
+            optionsStack.className = item.options.length > 2 ? 'options-stack grid-2' : 'options-stack';
+
+            item.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerHTML = `
+                    <span><strong>${opt.letter}.</strong> ${opt.text}</span>
+                    <span class="lock-indicator">🔒 LOCKED</span>
+                `;
+
+                btn.onclick = () => {
+                    if (PracticeSessionData.lockedAnswerForCurrent !== null) return; // STRICT LOCK: ONE ATTEMPT ONLY
+
+                    audio.lockSound();
+                    PracticeSessionData.lockedAnswerForCurrent = {
+                        letter: opt.letter,
+                        text: opt.text
+                    };
+
+                    // Neutral lock UI (no green/red answers revealed during play)
+                    btn.classList.add('is-locked');
+                    optionsStack.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+
+                    document.getElementById('lock-status-text').textContent = "Answer submitted and locked. Proceed to next item.";
+                    document.getElementById('btn-next-question').disabled = false;
+                };
+
+                optionsStack.appendChild(btn);
+            });
+
+            box.appendChild(optionsStack);
+            container.appendChild(box);
+        }
+
+        function handleProceedNext() {
+            audio.advanceSound();
+
+            const stageNum = PracticeSessionData.currentStage;
+            const qIdx = PracticeSessionData.currentQuestionIdx;
+            const stageArray = PracticeSessionData[`stage${stageNum}`];
+            const sourceItem = stageArray[qIdx];
+
+            const locked = PracticeSessionData.lockedAnswerForCurrent;
+            const isCorrect = (locked.letter === sourceItem.correctLetter);
+
+            PracticeSessionData.userSubmissions.push({
+                num: sourceItem.id,
+                stage: `Stage ${stageNum}`,
+                category: sourceItem.category,
+                prompt: sourceItem.prompt,
+                studentChoice: `${locked.letter}. ${locked.text}`,
+                correctAnswer: `${sourceItem.correctLetter}. ${sourceItem.correctText}`,
+                isCorrect: isCorrect,
+                explanation: sourceItem.explanation
+            });
+
+            // Advance through items
+            if (PracticeSessionData.currentQuestionIdx < 9) {
+                PracticeSessionData.currentQuestionIdx++;
+                renderCurrentQuestion();
+            } else {
+                if (PracticeSessionData.currentStage < 4) {
+                    PracticeSessionData.currentStage++;
+                    PracticeSessionData.currentQuestionIdx = 0;
+                    renderCurrentQuestion();
+                } else {
+                    renderFinalDossier();
+                }
+            }
+        }
+
+        function renderFinalDossier() {
+            clearInterval(PracticeSessionData.timerInterval);
+            audio.fanfare();
+
+            document.getElementById('screen-gameplay').style.display = 'none';
+            document.getElementById('screen-dossier').style.display = 'block';
+            document.getElementById('step-node-5').classList.add('done', 'current');
+
+            const total = PracticeSessionData.userSubmissions.length; // 40
+            const correctCount = PracticeSessionData.userSubmissions.filter(s => s.isCorrect).length;
+            const percentage = Math.round((correctCount / total) * 100);
+
+            document.getElementById('dossier-student-name').textContent = PracticeSessionData.studentName;
+            document.getElementById('dossier-student-section').textContent = PracticeSessionData.studentSection;
+            document.getElementById('dossier-score-text').textContent = `${correctCount} / ${total} (${percentage}%)`;
+
+            // Diagnostic Rank Badge
+            const rankBox = document.getElementById('dossier-rank-container');
+            let rankClass = "rating-cadet";
+            let rankTitle = "Cadet in Training (<70%)";
+
+            if (percentage >= 85) {
+                rankClass = "rating-master";
+                rankTitle = "Master Academic Analyst (85%+ Exceptional)";
+            } else if (percentage >= 70) {
+                rankClass = "rating-senior";
+                rankTitle = "Senior Report Writer (70–84% Competent)";
+            }
+
+            rankBox.innerHTML = `<span class="rating-badge ${rankClass}">🎖️ ${rankTitle}</span>`;
+
+            // Populate Item-by-Item Review Table
+            const tbody = document.getElementById('dossier-table-body');
+            tbody.innerHTML = '';
+
+            PracticeSessionData.userSubmissions.forEach(sub => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${sub.num}</strong></td>
+                    <td>
+                        <div style="font-weight: 700; color: var(--accent-cyan); font-size: 0.8rem;">${sub.stage}</div>
+                        <div style="font-size: 0.72rem; color: var(--text-muted);">${sub.category}</div>
+                    </td>
+                    <td style="color: #fff;">${sub.prompt}</td>
+                    <td>
+                        <span class="status-pill ${sub.isCorrect ? 'correct' : 'incorrect'}">
+                            ${sub.isCorrect ? '✓' : '✗'} ${sub.studentChoice}
+                        </span>
+                    </td>
+                    <td style="color: #38bdf8; font-weight: 600;">${sub.correctAnswer}</td>
+                    <td style="font-size: 0.82rem; color: #cbd5e1;">${sub.explanation}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    </script>
+</body>
+</html>
